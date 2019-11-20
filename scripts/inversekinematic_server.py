@@ -5,6 +5,14 @@ import math
 import numpy as np
 from rbe_500.srv import InverseKinematics, InverseKinematicsResponse
 
+#link lengths
+l1_v = 1
+l1_h = 1
+l2 = 1
+l3 = 1
+
+
+
 def rot_x(a):
 	R = np.asmatrix([[1, 0, 0],[0, math.cos(a), -1*math.sin(a)],[0, math.sin(a), math.cos(a)]])
 	return R
@@ -32,10 +40,10 @@ def calc_joints(D2,D,data) :
 	joints = InverseKinematicsResponse()
 
 	joints.q2 = math.atan2(D2,D) 
-	joints.q1 = math.atan2(data.y,data.x) - math.atan2(0.2*math.sin(joints.q2),0.2+0.2*math.cos(joints.q2))
+	joints.q1 = math.atan2(data.y,data.x) - math.atan2(l2*math.sin(joints.q2),l1_h+l2*math.cos(joints.q2))
 	joints.q3 = 0.1 - data.z
 
-	Rx = rot_x(math.pi)
+	Rx = rot_x(0)
 	Ry = rot_y(0)
 	Rz = rot_z(joints.q1+joints.q2)
 	R_from_joints = np.matmul(np.matmul(Rz,Ry), Rx).round(2)
@@ -53,7 +61,7 @@ def handle_inversekinematics(data) :
 	joints = InverseKinematicsResponse()
 	
 	r = data.x*data.x + data.y*data.y
-	D = (r - 0.08)/0.08
+	D = (r - l1_h*l1_h - l2*l2)/(2*l1_h*l2)
 	Rx = rot_x(data.t1)
 	Ry = rot_y(data.t2)
 	Rz = rot_z(data.t3)
@@ -73,9 +81,9 @@ def handle_inversekinematics(data) :
 	if check(R,R_from_joints) == 0 : 
 		# print("Wrong")
 		joints, R_from_joints = calc_joints(D2_2,D,data)
-			
+					
 
-	print("joints : %s %s %s"%(round(joints.q1*180/math.pi,2), round(joints.q2*180/math.pi,2), joints.q3))
+	# print("joints : %s %s %s"%(round(joints.q1*180/math.pi,2), round(joints.q2*180/math.pi,2), joints.q3))
 	return joints
 
 
@@ -83,7 +91,8 @@ def handle_inversekinematics(data) :
 def inverse_kinematics() :
 	rospy.init_node('inversekinematics_server')
 	s = rospy.Service('invkin_joint_positions',InverseKinematics,handle_inversekinematics)
-	print ("Ready to calculate")
+	# print l2
+	# print ("Ready to calculate")
 	rospy.spin()
 
 

@@ -37,8 +37,8 @@ def calc_joints(D2,D,data) :
 
 	Rx = rot_x(math.pi)
 	Ry = rot_y(0)
-	Rz = rot_z(-1*(joints.q1+joints.q2))
-	R_from_joints = np.matmul(np.matmul(Rx,Ry), Rz).round(2)
+	Rz = rot_z(joints.q1+joints.q2)
+	R_from_joints = np.matmul(np.matmul(Rz,Ry), Rx).round(2)
 	# print(R_from_joints)
 
 	return joints,R_from_joints
@@ -57,7 +57,7 @@ def handle_inversekinematics(data) :
 	Rx = rot_x(data.t1)
 	Ry = rot_y(data.t2)
 	Rz = rot_z(data.t3)
-	R = np.matmul(np.matmul(Rx,Ry),Rz).round(2)
+	R = np.matmul(np.matmul(Rz,Ry),Rx).round(2)
 	# print(R)
 	try : 
 		D2_1 = math.sqrt(1-D*D)

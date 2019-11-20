@@ -28,29 +28,57 @@ def joint_params_to_forward_kin(q1, q2, q3):
     T03 = T02.dot(T23)
     return T03
 
+#Satya Mallick, "Rotation Matrix to Euler Angles," learnopencv.com, June 4, 2016 
+def rotation_matrix_to_euler_angles(R):
+    sy = math.sqrt(R[0,0] * R[0,0] + R[1,0] * R[1,0])
+    singular = sy < 1e-6
+
+    if not singular:
+        x = math.atan2(R[2,1], R[2,2])
+        y = math.atan2(-R[2,0], sy)
+        z = math.atan2(R[1,0], R[0,0])
+    else:
+        x = math.atan2(-R[1,2], R[1,1])
+        y = math.atan2(-R[2,0], sy)
+        z = 0
+    return (x, y, z)
+
 def handle_forward_kin(req):
     q1 = req.q1
     q2 = req.q2
     q3 = req.q3
 
-    print "q1 = %s rad" % q1
-    print "q2 = %s rad" % q2
-    print "q3 = %s meters" % q3
+    #print "q1 = %s rad" % q1
+    #print "q2 = %s rad" % q2
+    #print "q3 = %s meters" % q3
 
     T03 = joint_params_to_forward_kin(q1, q2, q3)
 
-    print T03.round(2)
+    #print(str(T03.round(2)))
 
-    return str(T03.round(2))
+    x = T03[0, 3]
+    y = T03[1, 3]
+    z = T03[2, 3]
+
+    #print(str(T03[0:3, 0:3]))
+    
+    euler = rotation_matrix_to_euler_angles(T03[0:3, 0:3])
+    euler_x = euler[0]
+    euler_y = euler[1]
+    euler_z = euler[2]
+
+    temp = [x, y, z, euler_x, euler_y, euler_z]
+
+    return ForwardKinResponse(temp)
 
 def handle_jacobian(req):
     q1 = req.q1
     q2 = req.q2
     q3 = req.q3
 
-    print "q1 = %s rad" % q1
-    print "q2 = %s rad" % q2
-    print "q3 = %s meters" % q3
+    #print "q1 = %s rad" % q1
+    #print "q2 = %s rad" % q2
+    #print "q3 = %s meters" % q3
 
     J = np.array([[-0.2*np.sin(q1) - 0.2*np.sin(q1+q2), -0.2*np.sin(q1+q2) , 0],
                   [0.2*np.cos(q1) + 0.2*np.cos(q1+q2), 0.2*np.cos(q1+q2), 0],
@@ -59,7 +87,7 @@ def handle_jacobian(req):
                   [0, 0, 0],
                   [1, 1, 0]])
 
-    print J.round(2)
+    #print J.round(2)
 
     return str(J.round(2))
 

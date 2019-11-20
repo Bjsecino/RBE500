@@ -59,6 +59,7 @@ find_package(catkin REQUIRED COMPONENTS
    MultTwoNums.srv
    ForwardKin.srv
    Jacobian.srv
+   InverseKinematics.srv
  )
 
 ## Generate actions in the 'action' folder

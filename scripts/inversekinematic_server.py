@@ -38,19 +38,17 @@ def check(R,R_new) :
 
 def calc_joints(D2,D,data) :
 	joints = InverseKinematicsResponse()
-
+	
 	joints.q2 = math.atan2(D2,D) 
 	joints.q1 = math.atan2(data.y,data.x) - math.atan2(l2*math.sin(joints.q2),l1_h+l2*math.cos(joints.q2))
-	joints.q3 = 0.1 - data.z
+	joints.q3 = l3 - data.z
 
 	Rx = rot_x(0)
 	Ry = rot_y(0)
 	Rz = rot_z(joints.q1+joints.q2)
 	R_from_joints = np.matmul(np.matmul(Rz,Ry), Rx).round(2)
 	# print(R_from_joints)
-
 	return joints,R_from_joints
-
 
 def handle_inversekinematics(data) :
 	# print("Got [%s %s %s %s %s %s] as the end effector pose"%(data.x,data.y,data.z,data.t1,data.t2,data.t3))
@@ -72,24 +70,24 @@ def handle_inversekinematics(data) :
 		D2_2 = -1 * D2_1
 	except ValueError:
 		print
+	joints, R_from_joints = calc_joints(D2_1,D,data)
+	if check(R,R_from_joints) == 0 : 
+		joints, R_from_joints = calc_joints(D2_2,D,data)
+	return joints
+		# print("Wrong")
 	# print("D2   %s"%D2_1)
 	# print("D2_2 %s"%D2_2)
 	# print("D %s"%D)
 
-	joints, R_from_joints = calc_joints(D2_1,D,data)
 
-	if check(R,R_from_joints) == 0 : 
-		# print("Wrong")
-		joints, R_from_joints = calc_joints(D2_2,D,data)
 					
 
 	# print("joints : %s %s %s"%(round(joints.q1*180/math.pi,2), round(joints.q2*180/math.pi,2), joints.q3))
-	return joints
 
 
 
 def inverse_kinematics() :
-	rospy.init_node('inversekinematics_server')
+	rospy.init_node('inversekinematic_server')
 	s = rospy.Service('invkin_joint_positions',InverseKinematics,handle_inversekinematics)
 	# print l2
 	# print ("Ready to calculate")

@@ -2,4 +2,6 @@
 	<include file="$(find rbe_500)/custom_robot_gazebo/launch/custom_scara.launch"/>
 	<node pkg="rbe_500" type="forward_kin_server.py" name="forward_kin_server_node"/>
 
+	<node pkg="rbe_500" type="inversekinematic_server.py" name="inversekinematic_server_node"/>
+
 </launch>

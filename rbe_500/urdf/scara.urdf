@@ -1,0 +1,235 @@
+<?xml version="1.0"?>
+<robot name = "scara">
+	<gazebo>
+		<plugin filename="libgazebo_ros_control.so" name="gazebo_ros_control">
+        		<robotNamespace>/scara</robotNamespace>
+        		<robotSimType>gazebo_ros_control/DefaultRobotHWSim</robotSimType>
+      		</plugin>
+  	</gazebo>
+
+	<material name="white">
+		<color rgba="1 1 1 1"/>
+	</material>
+
+	<link name="world"/>
+
+	<link name="base_link">
+		<visual>
+			<geometry>
+				<cylinder length="1" radius="0.5"/>
+			</geometry>
+			<origin xyz="0 0 .5"/>
+			<material name="white"/>
+		</visual>
+		<collision>
+			<geometry>
+				<cylinder length="1" radius="0.5"/>
+			</geometry>
+			<origin xyz="0 0 .5"/>
+		</collision>
+		<inertial>
+			<mass value="1"/>
+			<inertia ixx="0.001" ixy="0" ixz="0" iyy="0.001" iyz="0" izz="0.001"/>
+		</inertial>
+	</link>
+
+	<joint name="world_to_base_link" type="fixed">
+		<parent link="world"/>
+		<child link="base_link"/>
+	</joint>
+
+	<link name="link_1_v">
+		<visual>
+			<geometry>
+				<cylinder length="1" radius="0.1"/>
+			</geometry>
+			<origin rpy="0 0 0" xyz="0 0 .5"/>
+		</visual>
+		<collision>
+			<geometry>
+				<cylinder length="1" radius="0.1"/>
+			</geometry>
+			<origin rpy="0 0 0" xyz="0 0 .5"/>
+		</collision>
+		<inertial>
+			<mass value="1"/>
+			<inertia ixx="0.001" ixy="0" ixz="0" iyy="0.001" iyz="0" izz="0.001"/>
+		</inertial>
+	</link>
+
+	<joint name="base_link_to_link_1_v" type="continuous">
+		<parent link="base_link"/>
+		<child link="link_1_v"/>
+		<axis xyz="0 0 1"/>
+		<origin rpy="0 0 0" xyz="0 0 1"/>
+		<limit effort="100.0" velocity="0.5"/>
+		<hardwareInterface>EffortJointInterface</hardwareInterface>
+	</joint>
+
+	<link name="link_1_h">
+		<visual>
+			<geometry>
+				<cylinder length="1" radius="0.1"/>
+			</geometry>
+			<origin rpy="1.57075 0 0" xyz="0 .5 0"/>
+		</visual>
+		<collision>
+			<geometry>
+				<cylinder length="1" radius="0.1"/>
+			</geometry>
+			<origin rpy="1.57075 0 0" xyz="0 .5 0"/>
+		</collision>
+		<inertial>
+			<mass value="1"/>
+			<inertia ixx="0.001" ixy="0" ixz="0" iyy="0.001" iyz="0" izz="0.001"/>
+		</inertial>
+	</link>
+
+	<joint name="link_1_v_to_link_1_h" type="fixed">
+		<parent link="link_1_v"/>
+		<child link="link_1_h"/>
+		<origin rpy="0 0 0" xyz="0 0 1"/>
+	</joint>
+
+	<link name="joint_1">
+		<visual>
+			<geometry>
+				<cylinder length="1" radius="0.5"/>
+			</geometry>
+			<origin rpy="0 0 0" xyz="0 0 0"/>
+			<material name="white"/>
+		</visual>
+		<collision>
+			<geometry>
+				<cylinder length="1" radius="0.5"/>
+			</geometry>
+			<origin rpy="0 0 0" xyz="0 0 0"/>
+		</collision>
+		<inertial>
+			<mass value="1"/>
+			<inertia ixx="0.001" ixy="0" ixz="0" iyy="0.001" iyz="0" izz="0.001"/>
+		</inertial>
+	</link>
+
+	<joint name="link_1_h_to_joint_1" type="continuous">
+		<parent link="link_1_h"/>
+		<child link="joint_1"/>
+		<axis xyz="0 0 1"/>
+		<origin rpy="0 0 0" xyz="0 1.5 0"/>
+		<limit effort="100.0" velocity="0.5"/>
+		<hardwareInterface>EffortJointInterface</hardwareInterface>
+	</joint>
+
+	<link name="link_2">
+		<visual>
+			<geometry>
+				<cylinder length="1" radius="0.1"/>
+			</geometry>
+			<origin rpy="1.57075 0 0" xyz="0 .5 0"/>
+		</visual>
+		<collision>
+			<geometry>
+				<cylinder length="1" radius="0.1"/>
+			</geometry>
+			<origin rpy="1.57075 0 0" xyz="0 .5 0"/>
+		</collision>
+		<inertial>
+			<mass value="1"/>
+			<inertia ixx="0.001" ixy="0" ixz="0" iyy="0.001" iyz="0" izz="0.001"/>
+		</inertial>
+	</link>
+
+	<joint name="joint_1_to_link_2" type="fixed">
+		<parent link="joint_1"/>
+		<child link="link_2"/>
+		<origin xyz="0 .5 0"/>
+	</joint>
+
+	<link name="joint_2">
+		<visual>
+			<geometry>
+				<box size="1 1 1"/>
+			</geometry>
+			<origin xyz="0 .5 0"/>
+			<material name="white"/>
+		</visual>
+		<collision>
+			<geometry>
+				<box size="1 1 1"/>
+			</geometry>
+			<origin xyz="0 .5 0"/>
+		</collision>
+		<inertial>
+			<mass value="1"/>
+			<inertia ixx="0.001" ixy="0" ixz="0" iyy="0.001" iyz="0" izz="0.001"/>
+		</inertial>
+	</link>
+
+	<joint name="link_2_to_joint_2" type="fixed">
+		<parent link="link_2"/>
+		<child link="joint_2"/>
+		<origin xyz="0 1 0"/>
+	</joint>
+
+	<link name="link_3">
+		<visual>
+			<geometry>
+				<cylinder length="1" radius="0.1"/>
+			</geometry>
+			<origin xyz="0 0 .5"/>
+		</visual>
+		<collision>
+			<geometry>
+				<cylinder length="1" radius="0.1"/>
+			</geometry>
+			<origin xyz="0 0 .5"/>
+		</collision>
+		<inertial>
+			<mass value="1"/>
+			<inertia ixx="0.001" ixy="0" ixz="0" iyy="0.001" iyz="0" izz="0.001"/>
+		</inertial>
+	</link>
+
+	<joint name="joint_2_to_link_3" type="prismatic">
+		<parent link="joint_2"/>
+		<child link="link_3"/>
+		<axis xyz="0 0 1"/>
+		<limit effort="100.0" lower="0" upper="1" velocity="0.1"/>
+		<origin rpy="3.14159 0 0" xyz="0 .5 -.5"/>
+		<hardwareInterface>EffortJointInterface</hardwareInterface>
+	</joint>
+
+	<transmission name="tran1">
+    		<type>transmission_interface/SimpleTransmission</type>
+    		<joint name="base_link_to_link_1_v">
+      			<hardwareInterface>EffortJointInterface</hardwareInterface>
+    		</joint>
+    		<actuator name="motor1">
+      			<hardwareInterface>EffortJointInterface</hardwareInterface>
+      			<mechanicalReduction>1</mechanicalReduction>
+    		</actuator>
+  	</transmission>
+
+  	<transmission name="tran2">
+    		<type>transmission_interface/SimpleTransmission</type>
+    		<joint name="link_1_h_to_joint_1">
+      			<hardwareInterface>EffortJointInterface</hardwareInterface>
+    		</joint>
+    		<actuator name="motor2">
+      			<hardwareInterface>EffortJointInterface</hardwareInterface>
+      			<mechanicalReduction>1</mechanicalReduction>
+    		</actuator>
+  	</transmission>
+
+  	<transmission name="tran3">
+    		<type>transmission_interface/SimpleTransmission</type>
+    		<joint name="joint_2_to_link_3">
+      			<hardwareInterface>EffortJointInterface</hardwareInterface>
+    		</joint>
+    		<actuator name="motor3">
+      			<hardwareInterface>EffortJointInterface</hardwareInterface>
+      			<mechanicalReduction>1</mechanicalReduction>
+    		</actuator>
+  	</transmission>
+
+</robot>

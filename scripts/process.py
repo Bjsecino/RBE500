@@ -49,7 +49,7 @@ def callback_jointstates(msg):
 
 
 if __name__ == '__main__':
-    rospy.init_node('process2')
+    rospy.init_node('process')
     # Wait for FK and IK Node to start
     rospy.wait_for_service('forward_kin')
     rospy.wait_for_service('invkin_joint_positions')

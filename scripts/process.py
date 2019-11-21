@@ -19,21 +19,21 @@ def callback_jointstates(msg):
     try:
         # To check from FK node (Q3.b)
         FK_Service = rospy.ServiceProxy(
-            'forward_kin_server', ForwardKin)  # Get the service object
+            'forward_kin', ForwardKin)  # Get the service object
         
-        pose_received = FK_Service(q1,  # Joint 1  ## Call the service
-                                         q2,  # Joint 2
-                                         q3)  # Joint 3
+        pose_received = FK_Service(Q1,  # Joint 1  ## Call the service
+                                         Q2,  # Joint 2
+                                         Q3)  # Joint 3
         
         IK_Service = rospy.ServiceProxy(
             'invkin_joint_positions', InverseKinematics)  # Get the service object
 
-        joint_params_received = IK_Service(pose_received.x,  # Call the service
-                                                        pose_received.y,
-                                                        pose_received.z,
-                                                        pose_received.t1,
-                                                        pose_received.t2,
-                                                        pose_received.t3)
+        joint_params_received = IK_Service(pose_received.pose[0],  # Call the service
+                                                        pose_received.pose[1],
+                                                        pose_received.pose[2],
+                                                        pose_received.pose[3],
+                                                        pose_received.pose[4],
+                                                        pose_received.pose[5])
                                                         
         
         print("Q1 Gazebo: " + str("%5.3f" %
@@ -49,13 +49,13 @@ def callback_jointstates(msg):
 
 
 if __name__ == '__main__':
-    rospy.init_node('processNode')
+    rospy.init_node('process2')
     # Wait for FK and IK Node to start
-    rospy.wait_for_service('forward_kin_server')
+    rospy.wait_for_service('forward_kin')
     rospy.wait_for_service('invkin_joint_positions')
 
     print("Starting to Test Forward and Inverse Kinematics Nodes")
 
-    rospy.Subscriber("/scara/joint_states", JointState, callback_jointstates)
+    rospy.Subscriber("/custom_scara/joint_states", JointState, callback_jointstates)
 
     rospy.spin()

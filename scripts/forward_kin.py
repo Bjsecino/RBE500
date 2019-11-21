@@ -22,10 +22,10 @@ def callback(data):
     print "q2 = %s rad" % q2
     print "q3 = %s meters" % q3
 
-    d1 = 0.2
-    a1 = 0.2
-    a2 = 0.2
-    d3 = 0.1 + q3
+    d1 = 1
+    a1 = 1
+    a2 = 1
+    d3 = 1 + q3
 
     T01 = dh_to_trans_mat(q1, d1, a1, 0)
     T12 = dh_to_trans_mat(q2, 0, a2, np.pi)

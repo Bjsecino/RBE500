@@ -3,7 +3,7 @@
   <param name="robot_description" command="cat $(find rbe_500_final_project)/custom_robot_description/urdf/custom_scara.urdf"/>
 
   <!-- Load joint controller configurations from YAML file to parameter server -->
-  <rosparam file="$(find rbe_500_final_project)/custom_robot_control/config/custom_robot_control.yaml" command="load"/>
+  <rosparam file="$(find rbe_500)/custom_robot_control/config/custom_robot_control.yaml" command="load"/>
 
   <!-- load the controllers -->
   <node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false"

@@ -201,7 +201,7 @@
     <child link="link3"/>
     <axis xyz="0 0 1"/>
     <origin xyz="0 0 0.5" />
-    <limit lower="-1" upper="1" effort="100.0" velocity="0.1"/>
+    <limit lower="-1" upper="1" effort="100.0" velocity="0.5"/>
     <!-- Controller Stuff -->
     <hardwareInterface>EffortJointInterface</hardwareInterface>
   </joint>

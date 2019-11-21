@@ -25,6 +25,8 @@ def callback_jointstates(msg):
                                          Q2,  # Joint 2
                                          Q3)  # Joint 3
         
+        # print("euler : %s %s"%(pose_received.pose[3],pose_received.pose[4]))
+
         IK_Service = rospy.ServiceProxy(
             'invkin_joint_positions', InverseKinematics)  # Get the service object
 
@@ -35,14 +37,18 @@ def callback_jointstates(msg):
                                                         pose_received.pose[4],
                                                         pose_received.pose[5])
                                                         
-        
-        print("Q1 Gazebo: " + str("%5.3f" %
-                           Q1) + ', Node:' + str(joint_params_received.q1))
-        print("Q2 Gazebo: " + str("%5.3f" %
-                           Q2) + ', Node:' + str(joint_params_received.q2))
-        print("Q3 Gazebo: " + str("%5.3f" %
-                           Q3) + ', Node: ' + str(joint_params_received.q3))
+        # if (round(Q1,3) != round(joint_params_received.q1,3) or round(Q2,3) != round(joint_params_received.q2,3) or round(Q3,3) != round(joint_params_received.q3,3)) :
+        #     print("Not matching")
+        print("Q1 Gazebo: " + "%.3f" %
+                           (Q1*180/math.pi) + ', Node: %f' % (round((joint_params_received.q1*180/math.pi),3)))
+        print("Q2 Gazebo: " + "%.3f" %
+                           (Q2*180/math.pi) + ', Node: %f' % (round((joint_params_received.q2*180/math.pi),3)))
+        print("Q3 Gazebo: " + "%.3f" %
+                           (Q3) + ', Node: %f' % (round(joint_params_received.q3,3)))
+        print("-------------------------")
 
+        # print("Q1 : %s, Q2 : %s, Q3 : %s"%(Q1,Q2,Q3))
+        # print("q1 : %s, q2 : %s, q3 : %s"%(joint_params_received.q1,joint_params_received.q2,joint_params_received.q3))
         
     except rospy.ServiceException, e:
         print "Service call failed: %s" % e

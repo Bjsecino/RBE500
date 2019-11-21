@@ -15,7 +15,7 @@ def dh_to_trans_mat(theta, d, a, alpha):
     return mat
 
 def joint_params_to_forward_kin(q1, q2, q3):
-    d1 = 1.5
+    d1 = 2
     a1 = 1
     a2 = 1
     d3 = 1 + q3

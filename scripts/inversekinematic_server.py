@@ -10,6 +10,7 @@ l1_v = 1
 l1_h = 1
 l2 = 1
 l3 = 1
+base_length = 1
 
 
 
@@ -57,7 +58,7 @@ def calc_joints(D2,D,data) :
 	
 	joints.q2 = math.atan2(D2,D) 
 	joints.q1 = math.atan2(data.y,data.x) - math.atan2(l2*math.sin(joints.q2),l1_h+l2*math.cos(joints.q2))
-	joints.q3 = data.z - l1_v 
+	joints.q3 = data.z - ( l1_v + base_length - l3 )
 
 	Rx = rot_x(0)
 	Ry = rot_y(0)

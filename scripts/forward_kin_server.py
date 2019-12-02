@@ -18,10 +18,10 @@ def joint_params_to_forward_kin(q1, q2, q3):
     d1 = 2
     a1 = 1
     a2 = 1
-    d3 = 1 + q3
+    d3 = -1 + q3
 
     T01 = dh_to_trans_mat(q1, d1, a1, 0)
-    T12 = dh_to_trans_mat(q2, 0, a2, np.pi)
+    T12 = dh_to_trans_mat(q2, 0, a2, 0)
     T23 = dh_to_trans_mat(0, d3, 0, 0)
 
     T02 = T01.dot(T12)
@@ -68,6 +68,7 @@ def handle_forward_kin(req):
     euler_z = euler[2]
 
     temp = [x, y, z, euler_x, euler_y, euler_z]
+    # print(temp)
 
     return ForwardKinResponse(temp)
 

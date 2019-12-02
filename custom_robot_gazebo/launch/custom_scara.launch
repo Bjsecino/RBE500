@@ -10,6 +10,6 @@
   <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" args="-file $(find rbe_500)/custom_robot_description/urdf/custom_scara.urdf -urdf -z 1 -model custom_scara" />
 
   <!-- Launch controller for robot joints -->
-  <include file="$(find rbe_500)/custom_robot_control/launch/custom_robot_control.launch">
+ <include file="$(find rbe_500)/custom_robot_control/launch/custom_robot_control.launch"> 
  </include>
 </launch>

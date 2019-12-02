@@ -10,6 +10,9 @@ project(custom_robot_control)
 find_package(catkin REQUIRED COMPONENTS
   rospy
   std_msg
+  controller_manager
+  joint_state_controller
+  robot_state_publisher
 )
 
 ## System dependencies are found with CMake's conventions

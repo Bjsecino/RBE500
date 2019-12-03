@@ -8,21 +8,20 @@ import time
 
 pub = rospy.Publisher('/custom_scara/joint3_position_controller/command', Float64, queue_size=10)
 
-def publishJointState(req):
+def callback_jointstates(msg):
 	global pub
-	#rate = rospy.Rate(100)
-	pub.publish(req.q3)
-	#time.sleep(1)
-	return posResponse(req.q3)
+	Q3 = msg.position[2]
+	#rate = rospy.Rate(10)
+	#pub.publish(req.q3)
+	time.sleep(0.2)
+	print("Q3 from gazebo: " + str("%2.3f" %
+                           Q3))
 	
-def controller_server():
-    rospy.init_node('controller_server')
-    s = rospy.Service('controller', pose, publishJointState)
-    print "Ready"
-    rospy.spin()
+
 
 if __name__ == "__main__":
-	controller_server()
-
-	
-    
+	rospy.init_node('testNode')
+	print("Printing values from Gazebo")
+	rospy.Subscriber("/custom_scara/joint_states",
+                     JointState, callback_jointstates)
+	rospy.spin()

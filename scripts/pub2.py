@@ -11,8 +11,6 @@ pub = rospy.Publisher('/custom_scara/joint3_position_controller/command', Float6
 def callback_jointstates(msg):
 	global pub
 	Q3 = msg.position[2]
-	#rate = rospy.Rate(10)
-	#pub.publish(req.q3)
 	time.sleep(0.2)
 	print("Q3 from gazebo: " + str("%2.3f" %
                            Q3))

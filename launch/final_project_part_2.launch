@@ -1,0 +1,5 @@
+<launch>
+	<include file="$(find rbe_500)/launch/final_project_part_1.launch"/>
+	<node pkg="rbe_500" type="pub2.py" name="pub2_node"/>
+	<node pkg="rbe_500" type="reference_pos_server.py" name="reference_pos_server"/>
+</launch>

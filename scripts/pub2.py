@@ -7,8 +7,8 @@ import time
 
 def callback_jointstates(msg):
 	global pub
-	Q3 = msg.position[2]
-	time.sleep(0.2)
+	Q3 = msg.position[0]
+	#time.sleep(0.2)
 	print("Q3 from gazebo: " + str("%2.3f" %
                            Q3))
 	

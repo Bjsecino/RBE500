@@ -61,6 +61,8 @@ find_package(catkin REQUIRED COMPONENTS
    Jacobian.srv
    InverseKinematics.srv
    position_controller_reference.srv
+   EEVel.srv
+   JointVel.srv
  )
 
 ## Generate actions in the 'action' folder

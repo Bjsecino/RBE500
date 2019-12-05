@@ -4,6 +4,8 @@ import rospy
 import math
 import numpy as np
 from rbe_500.srv import InverseKinematics, InverseKinematicsResponse
+from rbe_500.srv import EEVel, EEVelResponse
+from rbe_500.srv import JointVel, JointVelResponse
 
 #link lengths
 l1_v = 1
@@ -105,12 +107,60 @@ def handle_inversekinematics(data) :
 
 	# print("joints : %s %s %s"%(round(joints.q1*180/math.pi,2), round(joints.q2*180/math.pi,2), joints.q3))
 
+def handle_EEVel(data):
+	q1 = data.q1
+	q2 = data.q2
+	q3 = data.q3
+	dq1 = data.dq1
+	dq2 = data.dq2
+	dq3 = data.dq3
 
+	a1 = l1_h + l2 #distance along xy plane from joint1 to joint2
+	a2 = l3 # distance along xy plane from joint3 to end effector
+
+	J = np.matrix([[a1*math.cos(q1) + a2*math.cos(q1+q2), a2*math.cos(q1+q2), 0], [-a1*math.sin(q1) - a2*math.sin(q1+q2), -a2*math.sin(q1+q2), 0], [0, 0, -1]])
+	
+	dq = np.matrix([[dq1],[dq2],[dq3]])
+
+	dx = J*dq
+
+	temp = [dx.item(0), dx.item(1), dx.item(2)]
+
+	return EEVelResponse(temp)
+
+def handle_JointVel(data):
+	q1 = data.q1
+	q2 = data.q2
+	q3 = data.q3
+	dx = data.dx
+	dy = data.dy
+	dz = data.dz
+
+	a1 = l1_h + l2 #distance along xy plane from joint1 to joint2
+	a2 = l3 # distance along xy plane from joint3 to end effector
+
+	J = np.matrix([[a1*math.cos(q1) + a2*math.cos(q1+q2), a2*math.cos(q1+q2), 0], [-a1*math.sin(q1) - a2*math.sin(q1+q2), -a2*math.sin(q1+q2), 0], [0, 0, -1]])
+
+	try:
+		invJ = np.linalg.inv(J)
+	except:
+		print("J is singular")
+		invJ = J
+	
+	d_pos = np.matrix([[dx],[dy],[dz]])
+
+	dq = invJ * d_pos
+
+	temp = [dq.item(0), dq.item(1), dq.item(2)]
+
+	return JointVelResponse(temp)
 
 def inverse_kinematics() :
 	rospy.init_node('inversekinematic_server')
 	s = rospy.Service('invkin_joint_positions',InverseKinematics,handle_inversekinematics)
-	# print l2
+	ee_vel = rospy.Service('joint_vel_to_ee_vel', EEVel, handle_EEVel)
+	joint_vel = rospy.Service('ee_vel_to_joint_vel', JointVel, handle_JointVel)
+
 	print ("Ready to calculate")
 	rospy.spin()
 

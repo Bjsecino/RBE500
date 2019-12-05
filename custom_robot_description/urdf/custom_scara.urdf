@@ -63,11 +63,12 @@
     </inertial>
   </link>
 
-<joint name="joint1" type="fixed">
+<joint name="joint1" type="continuous">
     <parent link="base_link"/>
     <child link="link1a"/>
     <axis xyz="0 0 1"/>
     <origin xyz="0 0 0.75" />
+    <hardwareInterface>EffortJointInterface</hardwareInterface>
 </joint>
 
 <!-- 	
@@ -130,11 +131,12 @@
     </inertial>
   </link>
 
-<joint name="joint2" type="fixed">
+<joint name="joint2" type="continuous">
     <parent link="link1b"/>
     <child link="link2"/>
     <axis xyz="0 0 1"/>
     <origin xyz="1 0 0"/>
+    <hardwareInterface>EffortJointInterface</hardwareInterface>
 </joint>
 
 <!--
@@ -230,7 +232,7 @@
   </joint>
 
   <!-- Controller Stuff -->
-<!--
+
   <transmission name="tran1">
     <type>transmission_interface/SimpleTransmission</type>
     <joint name="joint1">
@@ -252,7 +254,7 @@
       <mechanicalReduction>1</mechanicalReduction>
     </actuator>
   </transmission>
--->
+
 
   <transmission name="tran3">
     <type>transmission_interface/SimpleTransmission</type>

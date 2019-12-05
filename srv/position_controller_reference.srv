@@ -1,3 +1,5 @@
-float64 ref
+float64 ref1
+float64 ref2
+float64 ref3
 ---
 float64 resp

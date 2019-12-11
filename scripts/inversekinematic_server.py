@@ -115,10 +115,13 @@ def handle_EEVel(data):
 	dq2 = data.dq2
 	dq3 = data.dq3
 
-	a1 = l1_h + l2 #distance along xy plane from joint1 to joint2
-	a2 = l3 # distance along xy plane from joint3 to end effector
+	a1 = l1_h #distance along xy plane from joint1 to joint2
+	a2 = l2 # distance along xy plane from joint2 to end effector
 
-	J = np.matrix([[a1*math.cos(q1) + a2*math.cos(q1+q2), a2*math.cos(q1+q2), 0], [-a1*math.sin(q1) - a2*math.sin(q1+q2), -a2*math.sin(q1+q2), 0], [0, 0, -1]])
+	J = np.matrix([[-a1*math.sin(q1) - a2*math.sin(q1+q2), -a2*math.sin(q1+q2), 0], 
+			[a1*math.cos(q1) + a2*math.cos(q1+q2), a2*math.cos(q1+q2), 0], 
+			[0, 0, -1]])
+
 	
 	dq = np.matrix([[dq1],[dq2],[dq3]])
 
@@ -136,16 +139,19 @@ def handle_JointVel(data):
 	dy = data.dy
 	dz = data.dz
 
-	a1 = l1_h + l2 #distance along xy plane from joint1 to joint2
-	a2 = l3 # distance along xy plane from joint3 to end effector
+	a1 = l1_h #distance along xy plane from joint1 to joint2
+	a2 = l2 # distance along xy plane from joint2 to end effector
 
-	J = np.matrix([[a1*math.cos(q1) + a2*math.cos(q1+q2), a2*math.cos(q1+q2), 0], [-a1*math.sin(q1) - a2*math.sin(q1+q2), -a2*math.sin(q1+q2), 0], [0, 0, -1]])
+	J = np.matrix([[-a1*math.sin(q1) - a2*math.sin(q1+q2), -a2*math.sin(q1+q2), 0], 
+			[a1*math.cos(q1) + a2*math.cos(q1+q2), a2*math.cos(q1+q2), 0], 
+			[0, 0, -1]])
+
 
 	try:
 		invJ = np.linalg.inv(J)
 	except:
 		print("J is singular")
-		invJ = J
+		return JointVelResponse([0,0,0])
 	
 	d_pos = np.matrix([[dx],[dy],[dz]])
 

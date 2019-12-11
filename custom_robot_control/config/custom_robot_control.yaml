@@ -13,7 +13,7 @@ custom_scara:
   joint2_position_controller:
    type: effort_controllers/JointPositionController
    joint: joint2
-   pid: {p: 20.0, i: 0.3, d: 110.0}
+   pid: {p: 100.0, i: 0.3, d: 100.0}
 
   joint3_position_controller:
     type: effort_controllers/JointPositionController
@@ -24,14 +24,14 @@ custom_scara:
   joint1_velocity_controller:
     type: effort_controllers/JointVelocityController
     joint: joint1
-    pid: {p: 100.0, i: 0.0, d: 0.0}
+    pid: {p: 150.0, i: 0.1, d: 1.0}
 
   joint2_velocity_controller:
     type: effort_controllers/JointVelocityController
     joint: joint2
-    pid: {p: 100.0, i: 0.0, d: 0.0}
+    pid: {p: 150.0, i: 0.1, d: 1.0}
 
   joint3_velocity_controller:
     type: effort_controllers/JointVelocityController
     joint: joint3
-    pid: {p: 100.0, i: 0.0, d: 0.0}
+    pid: {p: 150.0, i: 0.1, d: 1.0}

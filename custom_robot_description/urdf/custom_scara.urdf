@@ -71,19 +71,6 @@
     <hardwareInterface>EffortJointInterface</hardwareInterface>
 </joint>
 
-<!-- 	
-  <joint name="joint1" type="continuous">
-    <parent link="base_link"/>
-    <child link="link1a"/>
-    <axis xyz="0 0 1"/>
-    <origin xyz="0 0 0.75" />
-
-    <limit effort="100.0" velocity="0.5"/>
-
-    <hardwareInterface>EffortJointInterface</hardwareInterface>
-  </joint>
--->
-
 
   <link name="link1b">
     <visual>
@@ -138,18 +125,6 @@
     <origin xyz="1 0 0"/>
     <hardwareInterface>EffortJointInterface</hardwareInterface>
 </joint>
-
-<!--
-  <joint name="joint2" type="continuous">
-    <parent link="link1b"/>
-    <child link="link2"/>
-    <axis xyz="0 0 1"/>
-    <origin xyz="1 0 0"/>
-    <limit effort="100.0" velocity="0.1"/>
-
-    <hardwareInterface>EffortJointInterface</hardwareInterface>
-  </joint>
--->
 
   <link name="joint2Vis">
     <visual>

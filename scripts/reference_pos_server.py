@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 import rospy
 from rbe_500.srv import position_controller_reference,position_controller_referenceResponse
+
 from std_msgs.msg import Float64
 
 def handle_set_ref(data):
@@ -13,12 +14,17 @@ def handle_set_ref(data):
 
 
 def position_control_server():
+
+
 	s = rospy.Service('set_ref_pos',position_controller_reference,handle_set_ref)
 	print("ready to set reference")
 	rospy.spin()
 
+
 if __name__=="__main__" : 
 	rospy.init_node('reference_pos_server',anonymous = True)
+
+
 	pub1 = rospy.Publisher('/custom_scara/joint1_position_controller/command',Float64,queue_size=1)
 	pub2 = rospy.Publisher('/custom_scara/joint2_position_controller/command',Float64,queue_size=1)
 	pub3 = rospy.Publisher('/custom_scara/joint3_position_controller/command',Float64,queue_size=1)

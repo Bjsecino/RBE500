@@ -65,6 +65,7 @@ find_package(catkin REQUIRED COMPONENTS
    EEVel.srv
    JointVel.srv
    ContSwitcher.srv
+   CartesianVel.srv
  )
 
 ## Generate actions in the 'action' folder

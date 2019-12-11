@@ -12,8 +12,8 @@ def handle_set_ref(data):
 	return ret
 
 
-def position_control_server():
-	s = rospy.Service('set_ref_pos',position_controller_reference,handle_set_ref)
+def velocity_control_server():
+	s = rospy.Service('set_ref_vel',velocity_controller_reference,handle_set_ref)
 	print("ready to set reference")
 	rospy.spin()
 

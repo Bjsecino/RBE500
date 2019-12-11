@@ -242,7 +242,7 @@
       <hardwareInterface>EffortJointInterface</hardwareInterface>
       <mechanicalReduction>1</mechanicalReduction>
     </actuator>
-  </transmission>
+  </transmission> 
 
   <transmission name="tran2">
     <type>transmission_interface/SimpleTransmission</type>
@@ -254,7 +254,6 @@
       <mechanicalReduction>1</mechanicalReduction>
     </actuator>
   </transmission>
-
 
   <transmission name="tran3">
     <type>transmission_interface/SimpleTransmission</type>

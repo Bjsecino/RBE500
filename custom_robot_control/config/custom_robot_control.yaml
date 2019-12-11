@@ -19,3 +19,19 @@ custom_scara:
     type: effort_controllers/JointPositionController
     joint: joint3
     pid: {p: 4000.0, i: 0.3, d: 12.0}
+
+  # Velocity Controllers ---------------------------------------
+  joint1_velocity_controller:
+    type: effort_controllers/JointVelocityController
+    joint: joint1
+    pid: {p: 100.0, i: 0.0, d: 0.0}
+
+  joint2_velocity_controller:
+    type: effort_controllers/JointVelocityController
+    joint: joint2
+    pid: {p: 100.0, i: 0.0, d: 0.0}
+
+  joint3_velocity_controller:
+    type: effort_controllers/JointVelocityController
+    joint: joint3
+    pid: {p: 100.0, i: 0.0, d: 0.0}

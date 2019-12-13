@@ -1,11 +1,14 @@
 #!/usr/bin/env python
 
 import rospy
+import csv
+import time
 from rbe_500.srv import CartesianVel, CartesianVelResponse
 from sensor_msgs.msg import JointState
 from rbe_500.srv import JointVel, JointVelResponse
 from rbe_500.srv import velocity_controller_reference,velocity_controller_referenceResponse
 
+begin_time = time.time()
 
 global dx_des
 global dy_des
@@ -28,6 +31,7 @@ def handle_cartesian_vel(data):
 
 	
 def callback_jointstates(msg):
+	global begin_time
 
 	ser = rospy.ServiceProxy('/ee_vel_to_joint_vel', JointVel)
 	ref_vel = rospy.ServiceProxy('/set_ref_vel', velocity_controller_reference)
@@ -46,6 +50,11 @@ def callback_jointstates(msg):
 	dq2_des = joint_vels.joint_vel[1]
 	dq3_des = joint_vels.joint_vel[2]
 	
+	end_time = time.time()
+	time_used = end_time - begin_time
+	
+	write_csv([dq1_des,dq2_des,dq3_des,time_used])
+	
 	#print("%s %s %s" % (dq1_des, dq2_des, dq3_des))
 	#print q2
 
@@ -61,6 +70,13 @@ def cartesian_vel():
 	
 	print "ready to drive"
 	rospy.spin()
+	
+def write_csv(arr):
+    	path  = "q3_position.csv"
+    	with open(path,'a+') as f:
+        	csv_write = csv.writer(f)
+        	data_row = arr
+        	csv_write.writerow(data_row)
 
 
 if __name__=="__main__" :

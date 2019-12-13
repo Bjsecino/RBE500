@@ -7,12 +7,13 @@ from rbe_500.srv import CartesianVel, CartesianVelResponse
 from sensor_msgs.msg import JointState
 from rbe_500.srv import JointVel, JointVelResponse
 from rbe_500.srv import velocity_controller_reference,velocity_controller_referenceResponse
-
+import numpy as np
 begin_time = time.time()
 
 global dx_des
 global dy_des
 global dz_des
+# global ref_vel_list
 
 dx_des = 0
 dy_des = 0
@@ -32,7 +33,8 @@ def handle_cartesian_vel(data):
 	
 def callback_jointstates(msg):
 	global begin_time
-
+	global ref_vel_list
+	# ref_vel_list = []
 	ser = rospy.ServiceProxy('/ee_vel_to_joint_vel', JointVel)
 	ref_vel = rospy.ServiceProxy('/set_ref_vel', velocity_controller_reference)
 
@@ -44,6 +46,10 @@ def callback_jointstates(msg):
 	q2 = msg.position[1]
 	q3 = msg.position[2]
 
+	q1_dot = msg.velocity[0]
+	q2_dot = msg.velocity[1]
+	q3_dot = msg.velocity[2]
+
 	joint_vels = ser(q1, q2, q3, dx_des, dy_des, dz_des)
 
 	dq1_des = joint_vels.joint_vel[0]
@@ -52,11 +58,9 @@ def callback_jointstates(msg):
 	
 	end_time = time.time()
 	time_used = end_time - begin_time
-	
-	write_csv([dq1_des,dq2_des,dq3_des,time_used])
-	
-	#print("%s %s %s" % (dq1_des, dq2_des, dq3_des))
-	#print q2
+	if dq1_des!= 0 or dq2_des !=0 or dq3_des != 0 : 
+		if q1!=1.57079 or q2!=0 : 
+			write_csv([dq1_des,dq2_des,dq3_des,q1_dot,q2_dot,q3_dot])
 
 	ref_vel(dq1_des, dq2_des, dq3_des)
 
@@ -72,12 +76,16 @@ def cartesian_vel():
 	rospy.spin()
 	
 def write_csv(arr):
-    	path  = "ref_vel.csv"
-    	with open(path,'a+') as f:
-        	csv_write = csv.writer(f)
-        	data_row = arr
-        	csv_write.writerow(data_row)
+	# np.savetxt('ref_vel.txt',arr,delimiter)
+	path  = '/home/madhan/catkin_ws/src/RBE500/scripts/ref_vel.csv'
+	print("writing")
+	with open(path,mode='a') as f:
+		csv_write = csv.writer(f)
+ #    	# data_row = arr
+		csv_write.writerow(arr)
 
 
 if __name__=="__main__" :
 	cartesian_vel()
+	# global ref_vel_list
+	# ref_vel_list = []

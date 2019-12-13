@@ -2,5 +2,4 @@
 	<include file="$(find rbe_500)/launch/final_project_part_2.launch"/>
 	<node pkg="rbe_500" type="switch_controller_server.py" name="switch_controller_node"/>
 	<node pkg="rbe_500" type="reference_vel_server.py" name="reference_vel_server"/>
-	<node pkg="rbe_500" type="cartesian_vel_server.py" name="cartesian_vel_server"/>
 </launch>

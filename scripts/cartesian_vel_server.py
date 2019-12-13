@@ -72,7 +72,7 @@ def cartesian_vel():
 	rospy.spin()
 	
 def write_csv(arr):
-    	path  = "q3_position.csv"
+    	path  = "ref_vel.csv"
     	with open(path,'a+') as f:
         	csv_write = csv.writer(f)
         	data_row = arr
